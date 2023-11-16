@@ -97,6 +97,7 @@ if (typeof window !== 'undefined') {
   });
 }
   return (
+    <title>MediAssist</tittle>
     <Box
       display="flex"
       flex={1}
