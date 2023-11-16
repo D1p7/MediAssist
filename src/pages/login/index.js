@@ -110,7 +110,7 @@ if (typeof window !== 'undefined') {
       <Box
         display="flex"
         flexDirection="column"
-        height={"100vh"}
+        height={"100%"}
         border={0}
         // alignItems={"center"}
         // justifyContent={"center"}
