@@ -1,4 +1,4 @@
-import {
+nimport {
   Button,
   TextField,
   Typography,
@@ -249,7 +249,7 @@ export function ThirdStep({ result }) {
         variant="body1"
         fontSize={18}
         color="black"
-        textAlign={"justify"}
+        textAlign={"center"}
         sx={{ marginTop: -3 }}
       >
         Aguarde o profissional capacitado
