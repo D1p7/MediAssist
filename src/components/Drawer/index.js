@@ -27,7 +27,7 @@ export default function TemporaryDrawer({ state = { left: false }, setState, han
 
   const list = (anchor) => (
     <Box
-      sx={{ width: 250, matgintTop: "64px" }}
+      sx={{ width: 250, matginTop: "64px" }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
