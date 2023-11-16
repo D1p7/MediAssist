@@ -104,7 +104,7 @@ if (typeof window !== 'undefined') {
       flexDirection="column"
       justifyContent={"center"}
       bgcolor={"#5e95ff"}
-      paddingTop={13}
+      paddingTop={15}
     >
       <Navbar handleNav={setPage} />
       <Box
