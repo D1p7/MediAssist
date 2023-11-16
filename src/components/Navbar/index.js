@@ -21,7 +21,7 @@ export default function Navbar({ handleNav }) {
         state={state}
         setState={setState}
       />
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar
           sx={{ justifyContent: "space-between", backgroundColor: "#fff" }}
         >
