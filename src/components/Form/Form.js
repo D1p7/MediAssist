@@ -8,6 +8,10 @@ import {
   Box,
 } from "@mui/material";
 
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+import React from "react";
 import { useState } from "react";
 export const diseases = [
   [
@@ -64,12 +68,28 @@ const transformDataToAI = (data) => {
   console.log(result.length);
 };
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export function FirstStep({ onClick }) {
   const [code, setCode] = useState("");
   const [invalid, setInvalid] = useState(false);
   return (
-    <>
-      <Typography variant="h1" fontWeight="Bold" fontSize={32} textAlign={"center"} color="black">
+    <Box
+      display={"flex"}
+      flexDirection="column"
+      gap={3}
+      alignItems={"center"}
+      width={"100%"}
+    >
+      <Typography
+        variant="h1"
+        fontWeight="Bold"
+        fontSize={32}
+        textAlign={"center"}
+        color="black"
+      >
         Login
       </Typography>
       <Typography
@@ -78,35 +98,30 @@ export function FirstStep({ onClick }) {
         fontSize={18}
         color="black"
         sx={{ marginTop: -3 }}
-        textAlign={"center"} 
+        textAlign={"center"}
       >
         Digite o código disponibilizado para realizar o login
       </Typography>
       <TextField
         id="outlined-basic"
         label="Codigo"
+        fullWidth
         variant="outlined"
         value={code}
-        sx={{maxWidth: 300}}
+        sx={{ maxWidth: 300 }}
         onChange={(e) => setCode(e.target.value)}
       />
-      {invalid && (
-        <Typography
-          variant="body1"
-          fontWeight="Bold"
-          fontSize={14}
-          color="red"
-          textAlign={"center"}
-          sx={{ marginTop: -3}}
-        >
-          Código inválido, Tente novamente!
-        </Typography>
-      )}
+
       <Button
         variant="contained"
-        sx={{maxWidth: 300,
-            padding: '15px 0px',
-            fontSize: "15px"}}
+        fullWidth
+        sx={{
+          maxWidth: 300,
+          padding: "15px 10px",
+          fontSize: "15px",
+          position: "inherit",
+          top: 1,
+        }}
         onClick={() => {
           if (code !== "1618") {
             setInvalid(true);
@@ -117,15 +132,46 @@ export function FirstStep({ onClick }) {
       >
         Confirmar
       </Button>
-    </>
+      {invalid && (
+        <Typography
+          variant="body1"
+          fontWeight="Bold"
+          fontSize={14}
+          color="red"
+          textAlign={"center"}
+        >
+          Código inválido, Tente novamente!
+        </Typography>
+      )}
+    </Box>
   );
 }
 
 export function SecondStep({ step, submit, onChange, selected }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpenMsgError = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   return (
     <Box display="flex" flexDirection="column">
-      <Typography textAlign={"center"} variant="h1" fontWeight="Bold" fontSize={32} color="black">
+      <Typography
+        textAlign={"center"}
+        variant="h1"
+        fontWeight="Bold"
+        fontSize={32}
+        color="black"
+      >
         Teste
       </Typography>
       <FormGroup sx={{ marginTop: 5 }}>
@@ -145,14 +191,14 @@ export function SecondStep({ step, submit, onChange, selected }) {
       {step === 3 && (
         <Button
           variant="contained"
-          sx={{ marginTop: 5,
-            padding: '15px 0px',
-            fontSize: "15px"}}
+          sx={{ marginTop: 5, padding: "15px 0px", fontSize: "15px" }}
           onClick={async () => {
             try {
               setIsLoading(true);
               await submit();
+              handleClick();
             } catch (error) {
+              handleOpenMsgError();
               setIsLoading(false);
             } finally {
               setIsLoading(false);
@@ -163,6 +209,16 @@ export function SecondStep({ step, submit, onChange, selected }) {
           Enviar
         </Button>
       )}
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          Alta demanda no servidor, tente novamente mais tarde!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
@@ -170,7 +226,13 @@ export function SecondStep({ step, submit, onChange, selected }) {
 export function ThirdStep({ result }) {
   return (
     <>
-      <Typography textAlign={"center"} variant="h1" fontWeight="Bold" fontSize={32} color="black">
+      <Typography
+        textAlign={"center"}
+        variant="h1"
+        fontWeight="Bold"
+        fontSize={32}
+        color="black"
+      >
         Resultado
       </Typography>
       <Typography
