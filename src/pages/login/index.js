@@ -100,6 +100,7 @@ if (typeof window !== 'undefined') {
     <Box
       display="flex"
       flex={1}
+      height={"100vh"}
       flexDirection="column"
       justifyContent={"center"}
       bgcolor={"#5e95ff"}
@@ -108,10 +109,10 @@ if (typeof window !== 'undefined') {
       <Box
         display="flex"
         flexDirection="column"
-        flex={1}
+        height={"100vh"}
         border={0}
         // alignItems={"center"}
-        justifyContent={"center"}
+        // justifyContent={"center"}
         marginTop={5}
         bgcolor={"#fff"}
         padding={6}
