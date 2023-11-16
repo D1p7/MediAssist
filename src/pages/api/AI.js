@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     data = [data];
 
     const response = await axios.post(
-      "https://b5a0-34-106-25-31.ngrok-free.app/process_data",
+      "https://a38a-35-190-167-215.ngrok-free.app/process_data",
       JSON.stringify(data),
       {
         headers: {
