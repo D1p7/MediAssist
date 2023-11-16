@@ -170,7 +170,7 @@ if (typeof window !== 'undefined') {
             )}
           </>
         ) : (
-          <AboutUs />
+          <AboutUs marginTop:{13}/>
         )}
       </Box>
     </Box>
