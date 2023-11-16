@@ -17,7 +17,7 @@ export default function Home() {
 
   const sendToAi = async () => {
     const result = await axios.post(
-      "http://localhost:3000/api/AI",
+      "https://mediassist-gamma.vercel.app/api/AI",
       selectedDiseases
     );
     setTestResult(result.data.dtc);
