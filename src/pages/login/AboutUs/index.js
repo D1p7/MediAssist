@@ -24,7 +24,7 @@ export default function Form() {
           contribuir para estratégias proativas na gestão da saúde pública.
         </Typography>
         <Box height={20} />
-        <Typography variant="h4"  textAlign={"center"} sx={{marginBottom: 2}}>Por Que Escolher mediassist</Typography>
+        <Typography variant="h4"  textAlign={"center"} sx={{marginBottom: 2}}>Por Que Escolher MediAssist</Typography>
         <Typography variant="body1" textAlign={"center"}>
         ▪   Inovação em Saúde Pública: Utilizamos tecnologia de ponta para
           enfrentar desafios de saúde.
