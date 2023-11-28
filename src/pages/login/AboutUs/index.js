@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import Doctor from "../../../assets/images/Doctor.png";
 export default function Form() {
-  
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Image src={Doctor} alt="Doctor" />
