@@ -1,38 +1,46 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
 import MobileStepper from "@mui/material/MobileStepper";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar"; // Certifique-se que o caminho está correto
 import { Box, Button } from "@mui/material";
-import AboutUs from "./AboutUs";
-import { FirstStep, SecondStep, ThirdStep } from "../../components/Form/Form";
-import axios from "axios";
+import AboutUs from "./AboutUs"; // Certifique-se que o caminho está correto
+import { FirstStep, SecondStep, ThirdStep } from "../../components/Form/Form"; // Certifique-se que o caminho está correto
+// import axios from "axios"; // Não precisamos mais do axios para esta mockagem
 
 export default function Home() {
   const [page, setPage] = useState("Home");
   const [selectedDiseases, setSelectedDiseases] = useState([]);
-  const [testTesult, setTestResult] = useState([]);
+  const [testResult, setTestResult] = useState([]); // Corrigido de testTesult para testResult
+
+  const possibleOutcomes = ['Dengue', 'Zika', 'Chikungunya', 'Yellow Fever', 'Malaria'];
 
   const sendToAi = async () => {
-    const result = await axios.post(
-      "https://mediassist-gamma.vercel.app/api/AI",
-      selectedDiseases
-    );
-    setTestResult(result.data.dtc);
+    // Simula um pequeno atraso, como uma chamada de API real
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Seleciona uma doença aleatória da lista
+    const randomIndex = Math.floor(Math.random() * possibleOutcomes.length);
+    const randomDisease = possibleOutcomes[randomIndex];
+
+    // Define o resultado do teste com a doença aleatória
+    // Mantendo a estrutura esperada (result.data.dtc)
+    const mockApiResponse = {
+      data: {
+        dtc: randomDisease
+      }
+    };
+    setTestResult(mockApiResponse.data.dtc);
     handleNext();
   };
 
   const [activeStep, setActiveStep] = useState(0);
   const handleCheckbox = (disease) => {
     setSelectedDiseases((prevSelectedDiseases) => {
-      console.log(prevSelectedDiseases);
-      // Verifica se a doença já está presente em selectedDiseases
+      // console.log(prevSelectedDiseases); // Você pode manter ou remover este log
       const isDiseaseSelected = prevSelectedDiseases.includes(disease);
-
-      // Se estiver presente, remove a doença, senão adiciona
       if (isDiseaseSelected) {
         return prevSelectedDiseases.filter((selected) => selected !== disease);
       } else {
@@ -73,10 +81,10 @@ export default function Home() {
         step={activeStep - 1}
         onChange={handleCheckbox}
         selected={selectedDiseases}
-        submit={sendToAi}
+        submit={sendToAi} // A função sendToAi agora usa o mock
       />
     ),
-    5: <ThirdStep result={testTesult} onClick={() => setActiveStep(0)} />,
+    5: <ThirdStep result={testResult} onClick={() => setActiveStep(0)} />, // Corrigido para testResult
   };
 
   const handleNext = () => {
@@ -87,16 +95,14 @@ export default function Home() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  //acompanha o currentWidth do browser
   var w;
-
-if (typeof window !== 'undefined') {
-  w = window.innerWidth;
-
-  window.addEventListener("resize", () => {
+  if (typeof window !== 'undefined') {
     w = window.innerWidth;
-  });
-}
+    window.addEventListener("resize", () => {
+      w = window.innerWidth;
+    });
+  }
+
   return (
     <Box
       display="flex"
@@ -113,8 +119,6 @@ if (typeof window !== 'undefined') {
         flexDirection="column"
         height={"100%"}
         border={0}
-        // alignItems={"center"}
-        // justifyContent={"center"}
         bgcolor={"#fff"}
         padding={6}
         gap={5}
@@ -123,7 +127,7 @@ if (typeof window !== 'undefined') {
         {page === "Home" ? (
           <>
             {Stepper[activeStep]}
-            {activeStep != 0 && activeStep < 5 && (
+            {activeStep !== 0 && activeStep < 5 && ( // activeStep != 0 é o mesmo que activeStep !== 0
               <Box
                 display={"flex"}
                 width={"100%"}
@@ -132,9 +136,9 @@ if (typeof window !== 'undefined') {
               >
                 <MobileStepper
                   variant="dots"
-                  steps={4}
+                  steps={4} // O número de steps no MobileStepper é 4 (de 0 a 3 para os SecondStep)
                   position="bottom"
-                  activeStep={activeStep - 1}
+                  activeStep={activeStep - 1} // activeStep aqui vai de 0 a 3 para os SecondStep
                   sx={
                     w <= 900
                       ? { flexGrow: 1 }
@@ -150,7 +154,19 @@ if (typeof window !== 'undefined') {
                     <Button
                       size="small"
                       onClick={handleNext}
-                      disabled={activeStep === 4}
+                      // O botão "Próximo" deve ser desabilitado no último SecondStep (activeStep === 4)
+                      // Se o último step visível do MobileStepper é o 3 (quando activeStep é 4),
+                      // e o envio ocorre no activeStep 4, então o handleNext do MobileStepper
+                      // não deveria levar para o activeStep 5 diretamente, pois o sendToAi já faz isso.
+                      // No entanto, a lógica original permite isso, então vamos manter.
+                      // A desabilitação aqui deve ser activeStep === 4 se o submit é no activeStep 4
+                      // Ou activeStep === 5 se o stepper controlasse até o resultado.
+                      // Considerando que sendToAi chama handleNext, o botão "Próximo" no step 4
+                      // não deveria existir ou deveria ser o botão de "Submit".
+                      // O componente SecondStep no activeStep 4 já tem o prop 'submit',
+                      // então o botão 'Próximo' do MobileStepper pode não ser necessário nesse step.
+                      // Vamos manter como estava, mas é um ponto de atenção.
+                      disabled={activeStep === 4} // Desabilitar quando estiver no último passo antes do resultado
                     >
                       Próximo
                       <KeyboardArrowRight />
@@ -160,7 +176,7 @@ if (typeof window !== 'undefined') {
                     <Button
                       size="small"
                       onClick={handleBack}
-                      disabled={activeStep === 1}
+                      disabled={activeStep === 1} // Desabilitar quando estiver no primeiro SecondStep
                     >
                       <KeyboardArrowLeft />
                       Anterior
@@ -171,7 +187,7 @@ if (typeof window !== 'undefined') {
             )}
           </>
         ) : (
-          <AboutUs/>
+          <AboutUs />
         )}
       </Box>
     </Box>
